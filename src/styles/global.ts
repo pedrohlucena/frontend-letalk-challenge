@@ -30,5 +30,15 @@ export const GlobalStyle = createGlobalStyle`
         background-color: transparent;
         font-family: ${theme.fonts.families.openSans};
       }
+
+      button {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+      }
     `}
 `
