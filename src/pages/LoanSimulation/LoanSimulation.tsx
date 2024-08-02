@@ -4,13 +4,15 @@ import { useLoanSimulationForm } from 'hooks'
 import { api } from 'services'
 
 export function LoanSimulation() {
-  const { form } = useLoanSimulationForm()
+  const { form, errors } = useLoanSimulationForm()
 
   const cpfField = form.control.register('cpf')
   const ufField = form.control.register('uf')
   const birthDateField = form.control.register('birthDate')
   const loanValueField = form.control.register('loanValue')
   const installmentValueField = form.control.register('installmentValue')
+
+  const disableSimulate = !form.formState.isValid
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -36,31 +38,45 @@ export function LoanSimulation() {
             <TextField
               placeholder="CPF"
               inputRef={cpfField.ref}
+              error={!!errors.cpf}
+              helperText={errors.cpf?.message}
               {...cpfField}
             />
 
-            <TextField placeholder="UF" inputRef={ufField.ref} {...ufField} />
+            <TextField
+              placeholder="UF"
+              inputRef={ufField.ref}
+              error={!!errors.uf}
+              helperText={errors.uf?.message}
+              {...ufField}
+            />
 
             <TextField
               placeholder="DATA DE NASCIMENTO"
               inputRef={birthDateField.ref}
+              error={!!errors.birthDate}
+              helperText={errors.birthDate?.message}
               {...birthDateField}
             />
 
             <TextField
               placeholder="QUAL O VALOR DO EMPRÉSTIMO"
               inputRef={loanValueField.ref}
+              error={!!errors.loanValue}
+              helperText={errors.loanValue?.message}
               {...loanValueField}
             />
 
             <TextField
               placeholder="QUAL VALOR DESEJA PAGAR POR MÊS?"
               inputRef={installmentValueField.ref}
+              error={!!errors.installmentValue}
+              helperText={errors.installmentValue?.message}
               {...installmentValueField}
             />
           </S.Fields>
 
-          <Button>SIMULAR</Button>
+          <Button disabled={disableSimulate}>SIMULAR</Button>
         </S.Form>
       </S.Container>
     </S.LoanSimulationContainer>

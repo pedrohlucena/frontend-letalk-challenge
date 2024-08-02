@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 const envSchema = z.object({
-  PORT: z.string(),
   REACT_APP_API_BASE_URL: z.string().url(),
 })
 

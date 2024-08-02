@@ -10,6 +10,8 @@ const colors = {
   gray3: '#878787',
 
   orange1: '#F3A126',
+
+  red: '#FF0000',
 } as const
 
 const shadows = {
@@ -22,10 +24,12 @@ const fontFamilies = {
 
 const fontWeights = {
   light: '300',
+  regular: '400',
   bold: '700',
 }
 
 const fontSizes = {
+  sm: '1.4rem',
   lg: '1.6rem',
   xl: '2rem',
   '5xl': '5rem',
@@ -35,6 +39,7 @@ const fontPresets = {
   title: `${fontWeights.light} ${fontSizes['5xl']} ${fontFamilies.openSans}`,
   instruction: `${fontWeights.bold} ${fontSizes.xl} ${fontFamilies.openSans}`,
   buttonText: `${fontWeights.bold} ${fontSizes.lg} ${fontFamilies.openSans}`,
+  helperText: `${fontWeights.regular} ${fontSizes.sm} ${fontFamilies.openSans}`,
 }
 
 const fonts = {

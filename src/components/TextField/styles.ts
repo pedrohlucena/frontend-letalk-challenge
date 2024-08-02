@@ -1,8 +1,28 @@
 import { Input } from 'primitives'
-import styled, { css } from 'styled-components'
+import styled, { css, DefaultTheme } from 'styled-components'
+import { FieldProps, HelperTextProps } from './types'
 
-export const TextFieldContainer = styled(Input)`
-  ${({ theme }) =>
+const modifier = {
+  textfield: {
+    error: (theme: DefaultTheme) => css`
+      outline-color: ${theme.colors.red};
+    `,
+  },
+  helperText: {
+    error: (theme: DefaultTheme) => css`
+      color: ${theme.colors.red};
+    `,
+  },
+}
+
+export const TextFieldContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`
+
+export const Field = styled(Input)<FieldProps>`
+  ${({ theme, error }) =>
     css`
       width: 100%;
       height: 6rem;
@@ -14,5 +34,16 @@ export const TextFieldContainer = styled(Input)`
       ::placeholder {
         color: ${theme.colors.gray2};
       }
+
+      ${error && modifier.textfield.error(theme)}
     `}
+`
+
+export const HelperText = styled.p<HelperTextProps>`
+  ${({ theme, error }) => css`
+    font: ${theme.fonts.presets.helperText};
+    color: ${theme.colors.gray2};
+
+    ${error && modifier.helperText.error(theme)}
+  `}
 `
