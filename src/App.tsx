@@ -1,12 +1,13 @@
 import { ThemeProvider } from 'styled-components'
 import { defaultTheme, GlobalStyle } from './styles'
+import { LoanSimulation } from 'pages'
 
 export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
 
-      <h1>Desafio Full-stack Letalk</h1>
+      <LoanSimulation />
     </ThemeProvider>
   )
 }
