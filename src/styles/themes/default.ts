@@ -4,7 +4,10 @@ const colors = {
   gray: '#8F99A6',
 
   white1: '#F6F6F6',
-}
+
+  gray1: '#D4D4D4',
+  gray2: '#737373',
+} as const
 
 const fontFamilies = {
   openSans: 'Open Sans',

@@ -22,3 +22,26 @@ export const Instruction = styled.b`
     color: ${theme.colors.black};
   `}
 `
+
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.6rem;
+`
+
+export const Form = styled.form`
+  ${({ theme }) => css`
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 7rem 3rem 3.8rem 3.3rem;
+    background-color: ${theme.colors.white};
+  `}
+`
+
+export const Fields = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+`
