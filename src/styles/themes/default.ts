@@ -8,6 +8,8 @@ const colors = {
   gray1: '#D4D4D4',
   gray2: '#737373',
   gray3: '#878787',
+  gray4: '#333333',
+  gray5: '#C4C4C4',
 
   orange1: '#F3A126',
 
@@ -22,7 +24,7 @@ const shadows = {
 
 const fontFamilies = {
   openSans: 'Open Sans',
-}
+} as const
 
 const fontWeights = {
   light: '300',
@@ -43,6 +45,7 @@ const fontPresets = {
   indicator: `${fontWeights.bold} ${fontSizes.sm} ${fontFamilies.openSans}`,
   buttonText: `${fontWeights.bold} ${fontSizes.lg} ${fontFamilies.openSans}`,
   helperText: `${fontWeights.regular} ${fontSizes.sm} ${fontFamilies.openSans}`,
+  cell: `${fontWeights.regular} ${fontSizes.lg} ${fontFamilies.openSans}`,
 } as const
 
 const fonts = {
