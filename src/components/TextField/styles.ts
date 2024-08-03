@@ -5,12 +5,12 @@ import { FieldProps, HelperTextProps } from './types'
 const modifier = {
   textfield: {
     error: (theme: DefaultTheme) => css`
-      outline-color: ${theme.colors.red};
+      outline-color: ${theme.colors.red1};
     `,
   },
   helperText: {
     error: (theme: DefaultTheme) => css`
-      color: ${theme.colors.red};
+      color: ${theme.colors.red1};
     `,
   },
 }

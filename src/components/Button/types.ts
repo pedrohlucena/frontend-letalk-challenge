@@ -1,6 +1,6 @@
 import { PropsWithChildren, ButtonHTMLAttributes } from 'react'
 
-type ButtonTheme = 'primary'
+type ButtonTheme = 'primary' | 'secondary'
 
 type ButtonType = ButtonHTMLAttributes<HTMLButtonElement>['type']
 

@@ -11,7 +11,9 @@ const colors = {
 
   orange1: '#F3A126',
 
-  red: '#FF0000',
+  red1: '#FF0000',
+
+  green1: '#21AE1E',
 } as const
 
 const shadows = {
