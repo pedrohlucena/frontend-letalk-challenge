@@ -16,32 +16,67 @@ export const Title = styled.h1`
   `}
 `
 
-export const Instruction = styled.b`
+export const Bold = styled.b`
   ${({ theme }) => css`
     font: ${theme.fonts.presets.instruction};
     color: ${theme.colors.black};
   `}
 `
 
+export const Indicator = styled.p`
+  ${({ theme }) => css`
+    font: ${theme.fonts.presets.indicator};
+    color: ${theme.colors.gray2};
+  `}
+`
+
+export const Containers = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 7.2rem;
+`
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2.6rem;
 `
 
-export const Form = styled.form`
+export const WhiteBackground = styled.div`
   ${({ theme }) => css`
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+    width: 100%;
+    border-radius: 5px;
     padding: 7rem 3rem 3.8rem 3.3rem;
     background-color: ${theme.colors.white};
   `}
+`
+
+export const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 `
 
 export const Fields = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
+`
+
+export const Indicators = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 6.9rem;
+  column-gap: 10.6rem;
+`
+
+export const IndicatorContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 `

@@ -26,21 +26,22 @@ const fontWeights = {
   light: '300',
   regular: '400',
   bold: '700',
-}
+} as const
 
 const fontSizes = {
   sm: '1.4rem',
   lg: '1.6rem',
   xl: '2rem',
   '5xl': '5rem',
-}
+} as const
 
 const fontPresets = {
   title: `${fontWeights.light} ${fontSizes['5xl']} ${fontFamilies.openSans}`,
   instruction: `${fontWeights.bold} ${fontSizes.xl} ${fontFamilies.openSans}`,
+  indicator: `${fontWeights.bold} ${fontSizes.sm} ${fontFamilies.openSans}`,
   buttonText: `${fontWeights.bold} ${fontSizes.lg} ${fontFamilies.openSans}`,
   helperText: `${fontWeights.regular} ${fontSizes.sm} ${fontFamilies.openSans}`,
-}
+} as const
 
 const fonts = {
   families: fontFamilies,

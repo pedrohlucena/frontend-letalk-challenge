@@ -3,9 +3,17 @@ import * as S from './styles'
 import { useLoanSimulationForm } from 'hooks'
 import { api } from 'services'
 import { InstallmentValidationFunction } from './types'
-import { formatMoney } from 'utils'
+import {
+  camelCaseToSnakeCase,
+  formatMoney,
+  formatLoanSimulationForFront,
+} from 'utils'
+import { LoanSimulationFrontend, LoanSimulationResponse } from 'models'
+import { useState } from 'react'
 
 export function LoanSimulation() {
+  const [loanSimulation, setLoanSimulation] = useState<LoanSimulationFrontend>()
+
   const { form, errors } = useLoanSimulationForm()
 
   const loanValue = +form.watch('loanValue')
@@ -22,10 +30,24 @@ export function LoanSimulation() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const loan = form.getValues()
+    const { uf, loanValue, installmentValue } = form.getValues()
+
+    const queryParams = camelCaseToSnakeCase({
+      uf,
+      loanValue,
+      installmentValue,
+    })
+
+    const loanParams = '?' + new URLSearchParams(queryParams).toString()
+
+    const url = `/loans/simulation${loanParams}`
 
     try {
-      await api.post('/loan/simulation', loan)
+      const { data } = await api.get<LoanSimulationResponse>(url)
+
+      const frontendLoanSimulation = formatLoanSimulationForFront(data)
+
+      setLoanSimulation(frontendLoanSimulation)
     } catch (error) {
       console.error(error)
     }
@@ -61,55 +83,101 @@ export function LoanSimulation() {
     <S.LoanSimulationContainer>
       <S.Title>Simule e solicite o seu empréstimo.</S.Title>
 
-      <S.Container>
-        <S.Instruction>Preencha o formulário abaixo para simular</S.Instruction>
+      <S.Containers>
+        <S.Container>
+          <S.Bold>Preencha o formulário abaixo para simular</S.Bold>
 
-        <S.Form onSubmit={handleSubmit}>
-          <S.Fields>
-            <TextField
-              placeholder="CPF"
-              inputRef={cpfField.ref}
-              error={!!errors.cpf}
-              helperText={errors.cpf?.message}
-              {...cpfField}
-            />
+          <S.WhiteBackground>
+            <S.Form onSubmit={handleSubmit}>
+              <S.Fields>
+                <TextField
+                  placeholder="CPF"
+                  inputRef={cpfField.ref}
+                  error={!!errors.cpf}
+                  helperText={errors.cpf?.message}
+                  {...cpfField}
+                />
 
-            <TextField
-              placeholder="UF"
-              inputRef={ufField.ref}
-              error={!!errors.uf}
-              helperText={errors.uf?.message}
-              {...ufField}
-            />
+                <TextField
+                  placeholder="UF"
+                  inputRef={ufField.ref}
+                  error={!!errors.uf}
+                  helperText={errors.uf?.message}
+                  {...ufField}
+                />
 
-            <TextField
-              placeholder="DATA DE NASCIMENTO"
-              inputRef={birthDateField.ref}
-              error={!!errors.birthDate}
-              helperText={errors.birthDate?.message}
-              {...birthDateField}
-            />
+                <TextField
+                  placeholder="DATA DE NASCIMENTO"
+                  inputRef={birthDateField.ref}
+                  error={!!errors.birthDate}
+                  helperText={errors.birthDate?.message}
+                  {...birthDateField}
+                />
 
-            <TextField
-              placeholder="QUAL O VALOR DO EMPRÉSTIMO"
-              inputRef={loanValueField.ref}
-              error={!!errors.loanValue}
-              helperText={errors.loanValue?.message}
-              {...loanValueField}
-            />
+                <TextField
+                  placeholder="QUAL O VALOR DO EMPRÉSTIMO"
+                  inputRef={loanValueField.ref}
+                  error={!!errors.loanValue}
+                  helperText={errors.loanValue?.message}
+                  {...loanValueField}
+                />
 
-            <TextField
-              placeholder="QUAL VALOR DESEJA PAGAR POR MÊS?"
-              inputRef={installmentValueField.ref}
-              error={installmentValueError}
-              helperText={installmentValueErrorMessage}
-              {...installmentValueField}
-            />
-          </S.Fields>
+                <TextField
+                  placeholder="QUAL VALOR DESEJA PAGAR POR MÊS?"
+                  inputRef={installmentValueField.ref}
+                  error={installmentValueError}
+                  helperText={installmentValueErrorMessage}
+                  {...installmentValueField}
+                />
+              </S.Fields>
 
-          <Button disabled={disableSimulate}>SIMULAR</Button>
-        </S.Form>
-      </S.Container>
+              <Button disabled={disableSimulate}>SIMULAR</Button>
+            </S.Form>
+          </S.WhiteBackground>
+        </S.Container>
+
+        {loanSimulation && (
+          <S.Container>
+            <S.Bold>
+              Veja a simulação para o seu empréstimo antes de efetivar
+            </S.Bold>
+
+            <S.WhiteBackground>
+              <S.Indicators>
+                <S.IndicatorContainer>
+                  <S.Indicator>VALOR REQUERIDO:</S.Indicator>
+                  <S.Bold>{loanSimulation?.loanValue}</S.Bold>
+                </S.IndicatorContainer>
+
+                <S.IndicatorContainer>
+                  <S.Indicator>TOTAL DE MESES PARA QUITAR</S.Indicator>
+                  <S.Bold>{loanSimulation?.monthsToPayOff}</S.Bold>
+                </S.IndicatorContainer>
+
+                <S.IndicatorContainer>
+                  <S.Indicator>TAXA DE JUROS:</S.Indicator>
+                  <S.Bold>{loanSimulation?.interestRate}</S.Bold>
+                </S.IndicatorContainer>
+
+                <S.IndicatorContainer>
+                  <S.Indicator>TOTAL DE JUROS</S.Indicator>
+                  <S.Bold>{loanSimulation?.totalInterest}</S.Bold>
+                </S.IndicatorContainer>
+
+                <S.IndicatorContainer>
+                  <S.Indicator>VALOR QUE DESEJA PAGAR POR MÊS</S.Indicator>
+                  <S.Bold>{loanSimulation?.installmentValue}</S.Bold>
+                </S.IndicatorContainer>
+
+                <S.IndicatorContainer>
+                  <S.Indicator>TOTAL A PAGAR</S.Indicator>
+                  <S.Bold>{loanSimulation?.totalToPay}</S.Bold>
+                </S.IndicatorContainer>
+              </S.Indicators>
+            </S.WhiteBackground>
+          </S.Container>
+        )}
+      </S.Containers>
     </S.LoanSimulationContainer>
   )
 }

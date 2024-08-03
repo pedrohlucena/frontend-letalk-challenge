@@ -15,6 +15,7 @@ const modifier = {
 export const ButtonContainer = styled.button<ButtonContainerProps>`
   ${({ theme, buttonTheme, disabled }) =>
     css`
+      width: 100%;
       font: ${theme.fonts.presets.buttonText};
       padding: 1.1rem 0;
       border-radius: 6px;
