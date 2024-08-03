@@ -2,9 +2,14 @@ import { Button, TextField } from 'components'
 import * as S from './styles'
 import { useLoanSimulationForm } from 'hooks'
 import { api } from 'services'
+import { InstallmentValidationFunction } from './types'
+import { formatMoney } from 'utils'
 
 export function LoanSimulation() {
   const { form, errors } = useLoanSimulationForm()
+
+  const loanValue = +form.watch('loanValue')
+  const installmentValue = +form.watch('installmentValue')
 
   const cpfField = form.control.register('cpf')
   const ufField = form.control.register('uf')
@@ -25,6 +30,32 @@ export function LoanSimulation() {
       console.error(error)
     }
   }
+
+  const handleInstallmentValidation: InstallmentValidationFunction = (
+    loanValue,
+    installmentValue,
+  ) => {
+    const onePercentLoanValue = loanValue / 100
+
+    const installmentMinValueSatisfied = installmentValue >= onePercentLoanValue
+
+    if (!installmentMinValueSatisfied) {
+      const formattedInstallment = formatMoney(onePercentLoanValue)
+
+      return [
+        true,
+        `O valor da parcela deve ser maior ou igual a ${formattedInstallment}`,
+      ]
+    }
+
+    const error = !!form.formState.errors.installmentValue
+    const errorMessage = form.formState.errors.installmentValue?.message
+
+    return [error, errorMessage]
+  }
+
+  const [installmentValueError, installmentValueErrorMessage] =
+    handleInstallmentValidation(loanValue, installmentValue)
 
   return (
     <S.LoanSimulationContainer>
@@ -70,8 +101,8 @@ export function LoanSimulation() {
             <TextField
               placeholder="QUAL VALOR DESEJA PAGAR POR MÊS?"
               inputRef={installmentValueField.ref}
-              error={!!errors.installmentValue}
-              helperText={errors.installmentValue?.message}
+              error={installmentValueError}
+              helperText={installmentValueErrorMessage}
               {...installmentValueField}
             />
           </S.Fields>
