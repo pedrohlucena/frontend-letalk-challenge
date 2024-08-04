@@ -28,6 +28,7 @@ const fontFamilies = {
 
 const fontWeights = {
   light: '300',
+  medium: '500',
   regular: '400',
   bold: '700',
 } as const
@@ -46,6 +47,7 @@ const fontPresets = {
   buttonText: `${fontWeights.bold} ${fontSizes.lg} ${fontFamilies.openSans}`,
   helperText: `${fontWeights.regular} ${fontSizes.sm} ${fontFamilies.openSans}`,
   cell: `${fontWeights.regular} ${fontSizes.lg} ${fontFamilies.openSans}`,
+  alert: `${fontWeights.medium} ${fontSizes.lg} ${fontFamilies.openSans}`,
 } as const
 
 const fonts = {
