@@ -31,7 +31,7 @@ export function formatInstallmentProjectionForFront({
 
     const value = formatMonetaryValue(installment.installmentValue)
 
-    const frontInstallment = {
+    const frontInstallment: LoanInstallmentFrontend = {
       id,
       debtorsBalance,
       interest,
@@ -41,7 +41,7 @@ export function formatInstallmentProjectionForFront({
 
     if (installment.dueDate) {
       const dueDate = formatDate(installment.dueDate, DATE_FORMATS.dd_MM_yy)
-      installment.dueDate = dueDate
+      frontInstallment.dueDate = dueDate
     }
 
     return frontInstallment
