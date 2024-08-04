@@ -19,14 +19,18 @@ function LoanSimulationProvider({ children }: PropsWithChildren) {
     LoanInstallmentFrontend[]
   >([])
 
+  const [successfulCreation, setSuccessfulCreation] = useState<boolean>()
+
   const context = useMemo(
     () => ({
       loanSimulation,
       installmentsProjection,
+      successfulCreation,
       setLoanSimulation,
       setInstallmentsProjection,
+      setSuccessfulCreation,
     }),
-    [loanSimulation, installmentsProjection],
+    [loanSimulation, installmentsProjection, successfulCreation],
   )
 
   return <FormContext.Provider value={context}>{children}</FormContext.Provider>

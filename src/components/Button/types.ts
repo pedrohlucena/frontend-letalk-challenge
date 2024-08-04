@@ -8,6 +8,7 @@ export type ButtonProps = {
   theme?: ButtonTheme
   type?: ButtonType
   disabled?: boolean
+  onClick?: () => void
 } & PropsWithChildren
 
 export type ButtonContainerProps = { buttonTheme: ButtonTheme }

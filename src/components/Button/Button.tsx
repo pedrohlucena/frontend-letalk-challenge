@@ -6,9 +6,15 @@ export function Button({
   type,
   disabled,
   children,
+  onClick,
 }: ButtonProps) {
   return (
-    <S.ButtonContainer buttonTheme={theme} disabled={disabled} type={type}>
+    <S.ButtonContainer
+      buttonTheme={theme}
+      disabled={disabled}
+      type={type}
+      onClick={onClick}
+    >
       {children}
     </S.ButtonContainer>
   )

@@ -1,6 +1,6 @@
-import { Button, TextField } from 'components'
+import { Alert, Button, TextField } from 'components'
 import * as S from './styles'
-import { useLoanSimulationForm } from 'hooks'
+import { useLoanSimulation, useLoanSimulationForm } from 'hooks'
 import { api } from 'services'
 import { InstallmentValidationFunction } from './types'
 import {
@@ -9,21 +9,21 @@ import {
   formatLoanSimulationForFront,
   formatInstallmentProjectionForFront,
 } from 'utils'
-import {
-  InstallmentProjectionResponse,
-  LoanInstallmentFrontend,
-  LoanSimulationFrontend,
-  LoanSimulationResponse,
-} from 'models'
-import { useState } from 'react'
-import { Arrow } from 'assets/icons'
+import { InstallmentProjectionResponse, LoanSimulationResponse } from 'models'
+import { ArrowIcon } from 'assets/icons'
 import { Table } from 'containers'
+import Snackbar from '@mui/material/Snackbar'
+import SnackbarContent from '@mui/material/SnackbarContent'
 
 export function LoanSimulation() {
-  const [loanSimulation, setLoanSimulation] = useState<LoanSimulationFrontend>()
-
-  const [installmentsProjection, setInstallmentsProjection] =
-    useState<LoanInstallmentFrontend[]>()
+  const {
+    installmentsProjection,
+    loanSimulation,
+    successfulCreation,
+    setInstallmentsProjection,
+    setLoanSimulation,
+    setSuccessfulCreation,
+  } = useLoanSimulation()
 
   const { form, errors } = useLoanSimulationForm()
 
@@ -77,6 +77,24 @@ export function LoanSimulation() {
       formatInstallmentProjectionForFront(data)
 
     setInstallmentsProjection(frontendInstallmentProjection)
+  }
+
+  const handleLoanCreation = async () => {
+    const { uf, installmentValue, loanValue, cpf } = form.getValues()
+
+    const body = camelCaseToSnakeCase({
+      clientCpf: cpf,
+      uf,
+      loanValue,
+      installmentValue,
+    })
+
+    try {
+      await api.post('/loans', body)
+      setSuccessfulCreation(true)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -253,13 +271,29 @@ export function LoanSimulation() {
                     </S.TableBody>
                   </S.TableContainer>
 
-                  <Button theme="secondary">
+                  <Button theme="secondary" onClick={handleLoanCreation}>
                     EFETIVAR O EMPRÉSTIMO
-                    <Arrow />
+                    <ArrowIcon />
                   </Button>
                 </S.InstallmentsProjection>
               )}
             </S.WhiteBackground>
+
+            <Snackbar
+              open={successfulCreation}
+              autoHideDuration={6000}
+              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              onClose={() => setSuccessfulCreation(undefined)}
+            >
+              <SnackbarContent
+                sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}
+                message={
+                  <Alert severity="success">
+                    Empréstimo efetivado com sucesso
+                  </Alert>
+                }
+              />
+            </Snackbar>
           </S.Container>
         )}
       </S.Containers>
