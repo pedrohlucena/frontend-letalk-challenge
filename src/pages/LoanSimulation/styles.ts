@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 import { LoanLayout } from 'layouts'
+import { Table } from 'containers'
 
 export const LoanSimulationContainer = styled(LoanLayout)`
   display: flex;
@@ -73,10 +74,25 @@ export const Indicators = styled.div`
   grid-template-columns: repeat(3, 1fr);
   row-gap: 6.9rem;
   column-gap: 10.6rem;
+  margin-bottom: 7.3rem;
 `
 
 export const IndicatorContainer = styled.span`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+`
+
+export const InstallmentsProjection = styled.div``
+
+export const InstallmentsIndicator = styled(Indicator)`
+  margin-bottom: 1.9rem;
+`
+
+export const TableContainer = styled(Table.Container)`
+  margin-bottom: 5.4rem;
+`
+
+export const TableBody = styled(Table.Body)`
+  max-height: 88.3rem;
 `

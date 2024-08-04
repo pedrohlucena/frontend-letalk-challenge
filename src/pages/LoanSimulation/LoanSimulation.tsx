@@ -7,12 +7,23 @@ import {
   camelCaseToSnakeCase,
   formatMoney,
   formatLoanSimulationForFront,
+  formatInstallmentProjectionForFront,
 } from 'utils'
-import { LoanSimulationFrontend, LoanSimulationResponse } from 'models'
+import {
+  InstallmentProjectionResponse,
+  LoanInstallmentFrontend,
+  LoanSimulationFrontend,
+  LoanSimulationResponse,
+} from 'models'
 import { useState } from 'react'
+import { Arrow } from 'assets/icons'
+import { Table } from 'containers'
 
 export function LoanSimulation() {
   const [loanSimulation, setLoanSimulation] = useState<LoanSimulationFrontend>()
+
+  const [installmentsProjection, setInstallmentsProjection] =
+    useState<LoanInstallmentFrontend[]>()
 
   const { form, errors } = useLoanSimulationForm()
 
@@ -27,9 +38,7 @@ export function LoanSimulation() {
 
   const disableSimulate = !form.formState.isValid
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const handleGetLoanSimulation = async () => {
     const { uf, loanValue, installmentValue } = form.getValues()
 
     const queryParams = camelCaseToSnakeCase({
@@ -42,12 +51,40 @@ export function LoanSimulation() {
 
     const url = `/loans/simulation${loanParams}`
 
+    const { data } = await api.get<LoanSimulationResponse>(url)
+
+    const frontendLoanSimulation = formatLoanSimulationForFront(data)
+
+    setLoanSimulation(frontendLoanSimulation)
+  }
+
+  const handleGetInstallmentProjection = async () => {
+    const { uf, loanValue, installmentValue } = form.getValues()
+
+    const queryParams = camelCaseToSnakeCase({
+      uf,
+      loanValue,
+      installmentValue,
+    })
+
+    const installmentsParams = '?' + new URLSearchParams(queryParams).toString()
+
+    const url = `/loans/installments/projection${installmentsParams}`
+
+    const { data } = await api.get<InstallmentProjectionResponse>(url)
+
+    const frontendInstallmentProjection =
+      formatInstallmentProjectionForFront(data)
+
+    setInstallmentsProjection(frontendInstallmentProjection)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
     try {
-      const { data } = await api.get<LoanSimulationResponse>(url)
-
-      const frontendLoanSimulation = formatLoanSimulationForFront(data)
-
-      setLoanSimulation(frontendLoanSimulation)
+      handleGetLoanSimulation()
+      handleGetInstallmentProjection()
     } catch (error) {
       console.error(error)
     }
@@ -174,6 +211,54 @@ export function LoanSimulation() {
                   <S.Bold>{loanSimulation?.totalToPay}</S.Bold>
                 </S.IndicatorContainer>
               </S.Indicators>
+
+              {installmentsProjection && (
+                <S.InstallmentsProjection>
+                  <S.InstallmentsIndicator>
+                    PROJEÇÃO DAS PARCELAS:
+                  </S.InstallmentsIndicator>
+
+                  <S.TableContainer>
+                    <Table.Header>
+                      <Table.HeaderRow gridSystem="15.51% 14.26% 24.91% 17.66% 12.11%">
+                        <Table.HeaderCell>SALDO DEVEDOR</Table.HeaderCell>
+                        <Table.HeaderCell>JUROS</Table.HeaderCell>
+                        <Table.HeaderCell>
+                          SALDO DEVEDOR AJUSTADO
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>VALOR DA PARCELA</Table.HeaderCell>
+                        <Table.HeaderCell>VENCIMENTO</Table.HeaderCell>
+                      </Table.HeaderRow>
+                    </Table.Header>
+
+                    <S.TableBody>
+                      {installmentsProjection.map((installment) => (
+                        <Table.Row
+                          key={installment.id}
+                          gridSystem="15.51% 14.26% 24.91% 17.66% 12.11%"
+                        >
+                          <Table.Cell>{installment.debtorsBalance}</Table.Cell>
+
+                          <Table.Cell>{installment.interest}</Table.Cell>
+
+                          <Table.Cell>
+                            {installment.adjustedDebtorsBalance}
+                          </Table.Cell>
+
+                          <Table.Cell>{installment.value}</Table.Cell>
+
+                          <Table.Cell>{installment.dueDate}</Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </S.TableBody>
+                  </S.TableContainer>
+
+                  <Button theme="secondary">
+                    EFETIVAR O EMPRÉSTIMO
+                    <Arrow />
+                  </Button>
+                </S.InstallmentsProjection>
+              )}
             </S.WhiteBackground>
           </S.Container>
         )}
