@@ -1,7 +1,11 @@
+import { cpfRegex } from 'regex'
 import { z } from 'zod'
 
 export const loanSimulationSchema = z.object({
-  cpf: z.string(),
+  cpf: z
+    .string()
+    .regex(cpfRegex, 'O CPF deve ser informado no formato 000.000.000-00')
+    .length(14),
   uf: z.string(),
   birthDate: z.string(),
   loanValue: z.coerce
