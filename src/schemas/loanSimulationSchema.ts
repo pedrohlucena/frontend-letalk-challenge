@@ -1,4 +1,4 @@
-import { cpfRegex } from 'regex'
+import { birthDateRegex, cpfRegex } from 'regex'
 import { z } from 'zod'
 
 export const loanSimulationSchema = z.object({
@@ -7,7 +7,13 @@ export const loanSimulationSchema = z.object({
     .regex(cpfRegex, 'O CPF deve ser informado no formato 000.000.000-00')
     .length(14),
   uf: z.string(),
-  birthDate: z.string(),
+  birthDate: z
+    .string()
+    .regex(
+      birthDateRegex,
+      'A data de nascimento deve ser informada no formato 00/00/0000',
+    )
+    .length(10),
   loanValue: z.coerce
     .number({
       required_error: 'O valor do emprestimo é obrigatório',
