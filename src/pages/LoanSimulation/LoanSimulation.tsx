@@ -36,8 +36,6 @@ export function LoanSimulation() {
   const loanValueField = form.control.register('loanValue')
   const installmentValueField = form.control.register('installmentValue')
 
-  const disableSimulate = !form.formState.isValid
-
   const handleGetLoanSimulation = async () => {
     const { uf, loanValue, installmentValue } = form.getValues()
 
@@ -133,6 +131,8 @@ export function LoanSimulation() {
 
   const [installmentValueError, installmentValueErrorMessage] =
     handleInstallmentValidation(loanValue, installmentValue)
+
+  const disableSimulate = !form.formState.isValid || installmentValueError
 
   return (
     <S.LoanSimulationContainer>
