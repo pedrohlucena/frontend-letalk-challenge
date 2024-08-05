@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  Stage:
+    Type: String
+  ProjectName:
+    Type: String
+
+Resources:
+  StaticWebsiteS3:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub ${Stage}-${ProjectName}-${AWS::Region}
+      WebsiteConfiguration:
+        IndexDocument: 'index.html'
+        ErrorDocument: 'index.html'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        IgnorePublicAcls: false
+        BlockPublicPolicy: false
+        RestrictPublicBuckets: false
+
+  StaticWebsiteS3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref StaticWebsiteS3
+      PolicyDocument:
+        Statement:
+          - Action: 's3:GetObject'
+            Effect: 'Allow'
+            Resource: !Sub "${StaticWebsiteS3.Arn}/*"
+            Principal: '*'
+
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Comment: !Sub "CDN for ${Stage}-${ProjectName} website"
+        Enabled: true
+        Origins:
+          - DomainName: !GetAtt StaticWebsiteS3.DomainName
+            Id: 'S3Origin'
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: 'S3Origin'
+          ViewerProtocolPolicy: 'allow-all'
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: 'none'
+        DefaultRootObject: 'index.html'
