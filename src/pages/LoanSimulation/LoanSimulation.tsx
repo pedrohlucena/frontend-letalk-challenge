@@ -122,7 +122,7 @@ export function LoanSimulation() {
 
     const installmentMinValueSatisfied = installmentValue >= onePercentLoanValue
 
-    if (!installmentMinValueSatisfied) {
+    if (loanValue && !installmentMinValueSatisfied) {
       const formattedInstallment = formatMoney(onePercentLoanValue)
 
       return [
