@@ -37,8 +37,12 @@ export function LoanSimulation() {
   const cpfField = form.control.register('cpf')
   const ufField = form.control.register('uf')
   const birthDateField = form.control.register('birthDate')
-  const loanValueField = form.control.register('loanValue')
-  const installmentValueField = form.control.register('installmentValue')
+  const loanValueField = form.control.register('loanValue', {
+    valueAsNumber: true,
+  })
+  const installmentValueField = form.control.register('installmentValue', {
+    valueAsNumber: true,
+  })
 
   const handleGetLoanSimulation = async () => {
     const { uf, loanValue, installmentValue } = form.getValues()
