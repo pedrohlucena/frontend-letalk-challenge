@@ -212,23 +212,23 @@ export function LoanSimulation() {
                 </S.IndicatorContainer>
 
                 <S.IndicatorContainer>
-                  <S.Indicator>TOTAL DE MESES PARA QUITAR</S.Indicator>
-                  <S.Bold>{loanSimulation?.monthsToPayOff}</S.Bold>
-                </S.IndicatorContainer>
-
-                <S.IndicatorContainer>
                   <S.Indicator>TAXA DE JUROS:</S.Indicator>
                   <S.Bold>{loanSimulation?.interestRate}</S.Bold>
                 </S.IndicatorContainer>
 
                 <S.IndicatorContainer>
-                  <S.Indicator>TOTAL DE JUROS</S.Indicator>
-                  <S.Bold>{loanSimulation?.totalInterest}</S.Bold>
+                  <S.Indicator>VALOR QUE DESEJA PAGAR POR MÊS</S.Indicator>
+                  <S.Bold>{loanSimulation?.installmentValue}</S.Bold>
                 </S.IndicatorContainer>
 
                 <S.IndicatorContainer>
-                  <S.Indicator>VALOR QUE DESEJA PAGAR POR MÊS</S.Indicator>
-                  <S.Bold>{loanSimulation?.installmentValue}</S.Bold>
+                  <S.Indicator>TOTAL DE MESES PARA QUITAR</S.Indicator>
+                  <S.Bold>{loanSimulation?.monthsToPayOff}</S.Bold>
+                </S.IndicatorContainer>
+
+                <S.IndicatorContainer>
+                  <S.Indicator>TOTAL DE JUROS</S.Indicator>
+                  <S.Bold>{loanSimulation?.totalInterest}</S.Bold>
                 </S.IndicatorContainer>
 
                 <S.IndicatorContainer>
