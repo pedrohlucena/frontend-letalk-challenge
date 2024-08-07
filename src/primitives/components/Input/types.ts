@@ -6,5 +6,6 @@ export type InputProps = {
   placeholder?: string
   name?: string
   value?: string
+  mask?: string
   onChange?: React.ChangeEventHandler<HTMLInputElement>
 } & PropsWithClassName

@@ -7,15 +7,19 @@ export function Input({
   name,
   placeholder,
   value,
+  mask = '',
   onChange,
 }: InputProps) {
   return (
     <S.InputContainer
       className={className}
-      ref={inputRef}
+      inputRef={inputRef}
       name={name}
       placeholder={placeholder}
       value={value}
+      mask={mask}
+      maskChar={null}
+      alwaysShowMask={false}
       onChange={onChange}
     />
   )

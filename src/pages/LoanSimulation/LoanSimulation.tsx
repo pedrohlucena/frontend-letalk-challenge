@@ -9,7 +9,11 @@ import {
   formatLoanSimulationForFront,
   formatInstallmentProjectionForFront,
 } from 'utils'
-import { InstallmentProjectionResponse, LoanSimulationResponse } from 'models'
+import {
+  InstallmentProjectionResponse,
+  LoanSimulationResponse,
+  MASKS,
+} from 'models'
 import { ArrowIcon } from 'assets/icons'
 import { Table } from 'containers'
 import Snackbar from '@mui/material/Snackbar'
@@ -150,6 +154,7 @@ export function LoanSimulation() {
                   inputRef={cpfField.ref}
                   error={!!errors.cpf}
                   helperText={errors.cpf?.message}
+                  mask={MASKS.CPF}
                   {...cpfField}
                 />
 
@@ -158,6 +163,7 @@ export function LoanSimulation() {
                   inputRef={ufField.ref}
                   error={!!errors.uf}
                   helperText={errors.uf?.message}
+                  mask={MASKS.UF}
                   {...ufField}
                 />
 
@@ -166,6 +172,7 @@ export function LoanSimulation() {
                   inputRef={birthDateField.ref}
                   error={!!errors.birthDate}
                   helperText={errors.birthDate?.message}
+                  mask={MASKS.BIRTH_DATE}
                   {...birthDateField}
                 />
 
